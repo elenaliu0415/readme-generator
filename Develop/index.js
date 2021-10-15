@@ -1,25 +1,25 @@
-// TODO: Include packages needed for this application
+// Include packages needed for this application
 const inquirer = require("inquirer");
 const fs = require("fs");
 const generateMarkdown = require("./utils/generateMarkdown");
 const licenses = {
-  apache: {
+  APACHE2: {
     name: "Apache 2.0",
     badge: "https://img.shields.io/badge/License-Apache%202.0-blue.svg",
     link: "https://opensource.org/licenses/Apache-2.0",
   },
-  bsd3: {
+  BSD3: {
     name: "BSD3",
     badge: "https://img.shields.io/badge/License-BSD%203--Clause-blue.svg",
     link: "https://opensource.org/licenses/BSD-3-Clause",
   },
-  mit: {
+  MIT: {
     name: "MIT",
     badge: "https://img.shields.io/badge/License-MIT-yellow.svg",
     link: "https://opensource.org/licenses/MIT",
   },
 };
-// TODO: Create an array of questions for user input
+// Create an array of questions for user input
 const questions = [
   {
     type: "input",
@@ -43,13 +43,16 @@ const questions = [
   },
   {
     type: "input",
-    message: "What is your project contribution?",
+    message: "What is your project contributing guildlines?",
     name: "contribution",
+    default:
+      "Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.",
   },
   {
     type: "input",
     message: "What are your project tests?",
     name: "tests",
+    default: "N/A",
   },
   {
     type: "list",
@@ -69,20 +72,22 @@ const questions = [
   },
 ];
 
-// TODO: Create a function to write README file
+// Create a function to write README file
 function writeToFile(fileName, data) {
-    const contents = generateMarkdown(data);
-    fs.writeFile(fileName, contents, (err) => {
-        return (err) ? console.log(err) : console.log(fileName + " was created!");
-    })
+  const contents = generateMarkdown(data);
+  fs.writeFile(fileName, contents, (err) => {
+    return err
+      ? console.log(err)
+      : console.log(`Your professional ${fileName} is created!`);
+  });
 }
 
-// TODO: Create a function to initialize app
+// Create a function to initialize app
 function init() {
-    inquirer.prompt(questions).then((answers) => {
-        answers.license = licenses[answers.license];
-        writeToFile("Generator.md", answers);
-    });
+  inquirer.prompt(questions).then((answers) => {
+    answers.license = licenses[answers.license];
+    writeToFile("output/README.md", answers);
+  });
 }
 // Function call to initialize app
 init();
